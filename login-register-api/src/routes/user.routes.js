@@ -1,26 +1,21 @@
 import express from 'express';
-import { registerUser, loginUser } from '../controllers/user.controller.js';
+import {
+  registerUser,
+  loginUser,
+  getLoggedUser
+} from '../controllers/user.controller.js';
+
+import { authenticateToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-// Ruta para registrar un usuario
+// Registro
 router.post('/register', registerUser);
 
-// Ruta para hacer login
+// Login
 router.post('/login', loginUser);
 
+// Obtener usuario logueado (requiere token)
+router.get('/me', authenticateToken, getLoggedUser);
+
 export default router;
-
-/*
-¿Qué hace este archivo?
-Importa express.Router(), que nos permite crear mini rutas organizadas.
-
-Define dos rutas:
-
-POST /register → ejecuta registerUser
-
-POST /login → ejecuta loginUser
-
-Exporta el router para que lo podamos usar en index.js.
-
-*/

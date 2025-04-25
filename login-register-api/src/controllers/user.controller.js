@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 const SECRET_KEY = process.env.SECRET_KEY; //Para usar la clave .env y que no este en el codigo
 
 
-// 🧠 Registro de usuario
+//  Registro de usuario
 export const registerUser = async (req, res) => {
   const { email, username, password } = req.body;
 
@@ -41,7 +41,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// 🔐 Login de usuario
+//  Login de usuario
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -68,3 +68,23 @@ export const loginUser = async (req, res) => {
     return res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
+export const getLoggedUser = async (req, res) => {
+    try {
+      // Buscamos al usuario usando el ID extraído del token
+      const user = await prisma.user.findUnique({
+        where: { id: req.userId },
+        select: { id: true, name: true, email: true } // solo devolvemos info básica
+      });
+  
+      // Si no se encuentra el usuario, se devuelve un error
+      if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+  
+      // Si todo va bien, se devuelve el usuario
+      res.json(user);
+    } catch (err) {
+      console.error('Error al obtener usuario:', err);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  };
+  
