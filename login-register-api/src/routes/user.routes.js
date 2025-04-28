@@ -1,21 +1,25 @@
-import express from 'express';
-import {
+const express = require('express');
+const {
   registerUser,
   loginUser,
-  getLoggedUser
-} from '../controllers/user.controller.js';
+  getLoggedUser,
+  updateUser
+} = require('../controllers/user.controller');
 
-import { authenticateToken } from '../middlewares/authMiddleware.js';
+const { authenticateToken } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-// Registro
+// Registro de usuario
 router.post('/register', registerUser);
 
-// Login
+// Login de usuario
 router.post('/login', loginUser);
 
-// Obtener usuario logueado (requiere token)
+// Obtener información del usuario logueado (requiere token)
 router.get('/me', authenticateToken, getLoggedUser);
 
-export default router;
+// Actualizar nombre o contraseña (requiere token)
+router.put('/update', authenticateToken, updateUser);
+
+module.exports = router;
