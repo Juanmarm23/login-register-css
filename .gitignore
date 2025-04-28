@@ -3,7 +3,7 @@
 /frontend/node_modules
 /api/node_modules
 
-# npm packages lock files (No se suben)
+# npm packages lock files (no deben subirse)
 package-lock.json
 /frontend/package-lock.json
 /api/package-lock.json
