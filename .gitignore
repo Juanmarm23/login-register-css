@@ -1,12 +1,8 @@
-# dependencies
-/node_modules
-/frontend/node_modules
-/api/node_modules
+# Ignorar todas las carpetas node_modules en cualquier subdirectorio
+**/node_modules
 
-# npm packages lock files (no deben subirse)
-package-lock.json
-/frontend/package-lock.json
-/api/package-lock.json
+# Ignorar todos los archivos package-lock.json en cualquier subdirectorio
+**/package-lock.json
 
 # testing
 /coverage
