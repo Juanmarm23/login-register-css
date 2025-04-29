@@ -74,7 +74,7 @@ function Home() {
               type="password"
               placeholder="Nueva contraseña"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}  // Asegúrate de que la función onChange esté correctamente definida
+              onChange={(e) => setNewPassword(e.target.value)}  
             />
             <button className="update-button" onClick={updatePassword}>Actualizar Contraseña</button>
           </div>
@@ -86,7 +86,7 @@ function Home() {
               type="email"
               placeholder="Nuevo correo electrónico"
               value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}  // Asegúrate de que la función onChange esté correctamente definida
+              onChange={(e) => setNewEmail(e.target.value)}  
             />
             <button className="update-button" onClick={updateEmail}>Actualizar email</button>
           </div>
