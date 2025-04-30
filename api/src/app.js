@@ -1,14 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-const userRoutes = require('./routes/user.routes');
+const userRoutes = require('./routes/user.routes');  // Asegúrate de que esta ruta sea correcta
 
 const app = express();
+const PORT = process.env.PORT || 3001;
 
-// Middlewares
-app.use(cors()); // Para permitir peticiones desde otras URLs (como el frontend)
-app.use(express.json()); // Para que Express entienda JSON
+// Middleware para permitir peticiones JSON y CORS
+app.use(cors());
+app.use(express.json());
 
-// Rutas
-app.use('/api/users', userRoutes);
+// Montar las rutas bajo /api
+app.use('/api', userRoutes);  // Aquí está sin el '/users' para que la ruta de login sea '/api/login'
 
-module.exports = app;
+// Arrancar el servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+});

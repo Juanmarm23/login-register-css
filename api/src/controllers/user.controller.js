@@ -9,6 +9,8 @@ const SECRET_KEY = process.env.SECRET_KEY;
 export const registerUser = async (req, res) => {
   const { email, name, password } = req.body;
 
+  console.log("Datos recibidos para registro:", req.body); 
+
   try {
     if (!email || !name || !password) {
       return res.status(400).json({ message: 'Todos los campos son obligatorios' });
