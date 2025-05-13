@@ -5,6 +5,7 @@ import Button from './Button';
 
 const Register = () => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState(''); // Nuevo campo
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -22,7 +23,7 @@ const Register = () => {
     return isLongEnough && hasUpperCase && hasNumber && hasSpecialChar;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateEmail(email)) {
       setMessage('El email debe contener "@" y terminar en ".com"');
       return;
@@ -38,7 +39,26 @@ const Register = () => {
       return;
     }
 
-    setMessage('¡Registro exitoso!');
+    try {
+      const response = await fetch('http://localhost:3001/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password, name: name || 'Invitado' }) // se envía name
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('¡Registro exitoso!');
+      } else {
+        setMessage(data.message || 'Error al registrar');
+      }
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      setMessage('Error al conectar con el servidor');
+    }
   };
 
   return (
@@ -51,6 +71,14 @@ const Register = () => {
         onChange={(e) => setEmail(e.target.value)}
         type="email"
         name="email"
+      />
+
+      <TextInput
+        label="Nombre"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        type="text"
+        name="name"
       />
 
       <TextInput

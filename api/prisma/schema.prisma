@@ -3,9 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL") 
 }
+
 
 model User {
   id       Int     @id @default(autoincrement())
@@ -13,3 +14,4 @@ model User {
   password String
   name     String
 }
+
