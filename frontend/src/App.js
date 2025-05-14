@@ -4,6 +4,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home'; // Importa el componente Home
 
+//este es el cambio de prueba
+
 function App() {
   const [isLogin, setIsLogin] = useState(true); // Cambia entre login y register
   const [token, setToken] = useState(localStorage.getItem('token')); // Estado para almacenar el token
