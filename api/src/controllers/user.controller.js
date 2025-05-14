@@ -79,24 +79,28 @@ export const getLoggedUser = async (req, res) => {
 };
 
 // Actualizar nombre o contraseña
+// Actualizar nombre, correo o contraseña
 export const updateUser = async (req, res) => {
-  const { name, newPassword } = req.body;
+  const { name, password, email } = req.body;
 
   try {
     const userId = req.userId;
-
     const updates = {};
 
     if (name) {
       updates.name = name;
     }
 
-    if (newPassword) {
-      if (newPassword.length < 6) {
+    if (email) {
+      updates.email = email;
+    }
+
+    if (password) {
+      if (password.length < 6) {
         return res.status(400).json({ message: 'La contraseña debe tener al menos 6 caracteres.' });
       }
 
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
       updates.password = hashedPassword;
     }
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './Home.css'; // Estilo home.css, lo he metido en componentes para que no este todo en app.css
+import './Home.css';
 
-function Home() {
-  const [user, setUser] = useState(null); // Para almacenar la información del usuario logueado
-  const [newPassword, setNewPassword] = useState(''); // Para cambiar la contraseña
-  const [newEmail, setNewEmail] = useState(''); // Para cambiar el correo electrónico
-  const [token, setToken] = useState(localStorage.getItem('token')); // Obtener el token desde localStorage
+function Home({ setToken }) {
+  const [user, setUser] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const token = localStorage.getItem('token');
 
   // Cargar la información del usuario al montar el componente
   useEffect(() => {
@@ -16,15 +16,12 @@ function Home() {
           Authorization: `Bearer ${token}`,
         },
       })
-        .then((response) => response.json())
+        .then((res) => res.json())
         .then((data) => setUser(data))
-        .catch((error) => console.error('Error fetching user info:', error));
-    } else {
-      console.log('No token found, please log in again.');
+        .catch((err) => console.error('Error fetching user info:', err));
     }
-  }, [token]); // El efecto se ejecuta cuando cambia el token
+  }, [token]);
 
-  // Función para actualizar la contraseña
   const updatePassword = () => {
     fetch('http://localhost:3001/api/update', {
       method: 'PUT',
@@ -32,17 +29,16 @@ function Home() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ password: newPassword }),
+      body: JSON.stringify({ newPassword }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
         console.log('Password updated successfully');
-        setNewPassword(''); // Limpiamos el campo de la contraseña
+        setNewPassword('');
       })
-      .catch((error) => console.error('Error updating password:', error));
+      .catch((err) => console.error('Error updating password:', err));
   };
 
-  // Función para actualizar el correo electrónico
   const updateEmail = () => {
     fetch('http://localhost:3001/api/update', {
       method: 'PUT',
@@ -52,19 +48,27 @@ function Home() {
       },
       body: JSON.stringify({ email: newEmail }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
         console.log('Email updated successfully');
-        setNewEmail(''); // Limpiamos el campo del correo electrónico
+        setNewEmail('');
+        setUser((prev) => ({ ...prev, email: data.user.email })); // Refrescar email en pantalla
       })
-      .catch((error) => console.error('Error updating email:', error));
+      .catch((err) => console.error('Error updating email:', err));
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    if (setToken) setToken(null); // Solo si el prop existe
+    window.location.reload();
   };
 
   return (
     <div className="home-container">
       {user ? (
         <>
-          <h2>Hola, {user.name}</h2>  {/* Saludo con el nombre del usuario */}
+          <h2>Hola, {user.name}</h2>
           <p>Email: {user.email}</p>
 
           <div className="update-section">
@@ -74,9 +78,11 @@ function Home() {
               type="password"
               placeholder="Nueva contraseña"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}  
+              onChange={(e) => setNewPassword(e.target.value)}
             />
-            <button className="update-button" onClick={updatePassword}>Actualizar Contraseña</button>
+            <button className="update-button" onClick={updatePassword}>
+              Actualizar Contraseña
+            </button>
           </div>
 
           <div className="update-section">
@@ -86,13 +92,19 @@ function Home() {
               type="email"
               placeholder="Nuevo correo electrónico"
               value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}  
+              onChange={(e) => setNewEmail(e.target.value)}
             />
-            <button className="update-button" onClick={updateEmail}>Actualizar email</button>
+            <button className="update-button" onClick={updateEmail}>
+              Actualizar email
+            </button>
           </div>
+
+          <button className="logout-button" onClick={logout}>
+            Cerrar sesión
+          </button>
         </>
       ) : (
-        <p className="loading-text">Cargando...</p>  
+        <p className="loading-text">Cargando...</p>
       )}
     </div>
   );

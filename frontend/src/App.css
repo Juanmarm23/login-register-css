@@ -101,3 +101,21 @@ button:hover {
   text-align: center;
   font-weight: 500;
 }
+.logout-button {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #ef4444; /* rojo */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 420px;
+}
+
+.logout-button:hover {
+  background-color: #dc2626;
+}

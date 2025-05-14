@@ -14,7 +14,7 @@ function App() {
     if (storedToken) {
       setToken(storedToken); // Si hay un token, lo guardamos
     }
-  }, []); // Este useEffect se ejecuta solo una vez al inicio (cuando el componente se monta)
+  }, []);
 
   const toggleForm = () => {
     setIsLogin(!isLogin); // toggleForm cambia el valor de isLogin
@@ -23,15 +23,19 @@ function App() {
   return (
     <div className="App">
       {token ? (
-        <Home />  // Si hay un token, mostrar la página de Home
+        <Home />
       ) : isLogin ? (
-        <Login />  // Si no hay token y está en login, mostrar el formulario de Login
+        <Login />
       ) : (
-        <Register />  // Si no está en login, mostrar el formulario de Register
+        <Register />
       )}
-      <button className="toggle-button" onClick={toggleForm}>
-        {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
-      </button>
+
+      {/* Solo mostrar el botón de alternancia si el usuario NO está logueado */}
+      {!token && (
+        <button className="toggle-button" onClick={toggleForm}>
+          {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
+        </button>
+      )}
     </div>
   );
 }

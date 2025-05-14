@@ -41,4 +41,12 @@
   .loading-text {
     color: #888;
   }
-  
+  .logout-button {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
